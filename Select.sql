@@ -23,7 +23,7 @@ WHERE name_or_alias NOT LIKE '% %';
 --Название треков, которые содержат слово «мой» или «my»
 SELECT name_of_the_track, duration
 FROM tracks
-WHERE lower(name_of_the_track) SIMILAR TO '(my %|% my %|% my|мой %|% мой %|% мой)';
+WHERE lower(name_of_the_track) SIMILAR TO '(my|my %|% my %|% my|мой|мой %|% мой %|% мой)';
 
 --Задание 3
 --Количество исполнителей в каждом жанре
@@ -59,7 +59,7 @@ JOIN tracks t ON tc.track_id = t.id
 JOIN albums al ON t.album_id = al.id
 JOIN performer_album pa ON al.id = pa.album_id
 JOIN performers p ON pa.performer_id = p.id
-WHERE p.name_or_alias = 'Rammstein'
+WHERE p.name_or_alias = 'Rammstein';
 
 --Задание 4(необязательное)
 --Названия альбомов, в которых присутствуют исполнители более чем одного жанра.
@@ -75,7 +75,7 @@ SELECT name_of_the_track FROM tracks t
 WHERE t.id NOT IN (
 	SELECT t2.id FROM tracks t2
 	JOIN track_collection tc2 ON t2.id = tc2.track_id
-	)
+	);
 
 --Исполнитель или исполнители, написавшие самый короткий по продолжительности
 --трек, — теоретически таких треков может быть несколько
@@ -85,7 +85,7 @@ JOIN performer_album pa ON a.id = pa.album_id
 JOIN performers p ON pa.performer_id = p.id
 GROUP BY p.name_or_alias, t.duration
 HAVING t.duration = (SELECT min(duration) FROM tracks)
-ORDER BY p.name_or_alias
+ORDER BY p.name_or_alias;
 
 --Названия альбомов, содержащих наименьшее количество треков
 SELECT a.title, count(t.id) FROM albums a
